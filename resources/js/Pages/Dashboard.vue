@@ -29,11 +29,10 @@
             </div>
             <div class="flex justify-between max-w-sm">
                 <label for="birthDate">Date of birth:</label>
-                <p-date-picker
+                <p-calendar
                     v-model="birthDate"
                     class="flex"
                     showIcon
-                    fluid
                     iconDisplay="input"
                     inputId="birthDate"
                 />
@@ -56,7 +55,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import pInputText from 'primevue/inputtext';
-import pDatePicker from 'primevue/datepicker';
+import pCalendar from 'primevue/calendar';
 import pDropdown from 'primevue/dropdown';
 
 
