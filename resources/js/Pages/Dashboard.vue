@@ -2,7 +2,7 @@
 <template>
     <Head title="Dashboard" />
     <AuthenticatedLayout>
-        <div class="flex flex-col max-w-screen-xl mx-auto my-4 border-2 border-red-500">
+        <div class="flex flex-col max-w-screen-xl mx-auto my-4 gap-2 border-2 border-red-500">
             <div class="flex flex-col max-w-sm">
                 <label for="name">Име:</label>
                 <p-input-text
@@ -27,8 +27,8 @@
                     placeholder="Фамилия..."
                 />
             </div>
-            <div class="flex justify-between max-w-sm">
-                <label for="birthDate">Date of birth:</label>
+            <div class="flex justify-between items-center max-w-sm">
+                <label for="birthDate">Дата на раждане:</label>
                 <p-calendar
                     v-model="birthDate"
                     class="flex"
@@ -42,8 +42,12 @@
                     v-model="selectedUniversity"
                     :options="university"
                     optionLabel="name"
-                    placeholder="Select a City"
-                    class="w-full md:w-14rem"
+                    placeholder="Изберете университет..."
+                    class="w-full md:w-14rem mr-4"
+                />
+                <p-button
+                    icon="pi pi-pencil"
+                    aria-label="Submit"
                 />
             </div>
         </div>
@@ -57,7 +61,7 @@ import { ref } from 'vue';
 import pInputText from 'primevue/inputtext';
 import pCalendar from 'primevue/calendar';
 import pDropdown from 'primevue/dropdown';
-
+import pButton from 'primevue/button';
 
 const name = ref(null);
 const fathersName = ref(null);
