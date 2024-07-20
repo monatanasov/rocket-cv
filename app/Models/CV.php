@@ -26,7 +26,7 @@ class CV extends Model
         self::ID,
     ];
 
-    public function techSkill(): BelongsToMany
+    public function techSkills(): BelongsToMany
     {
         return $this->belongsToMany(
                 TechSkill::class,
@@ -38,7 +38,7 @@ class CV extends Model
             );
     }
 
-    public function universities(): BelongsTo
+    public function university(): BelongsTo
     {
         return $this->belongsTo(
                 University::class,
