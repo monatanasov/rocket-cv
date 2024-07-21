@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\CvController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -17,6 +18,8 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [CvController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::post('/dashboard', [CvController::class, 'store'])->middleware(['auth', 'verified'])->name('dashboard.store');
+
+Route::get('/search', [SearchController::class, 'index'])->middleware(['auth', 'verified'])->name('search');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

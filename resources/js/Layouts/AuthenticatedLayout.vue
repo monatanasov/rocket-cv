@@ -25,12 +25,20 @@ const showingNavigationDropdown = ref(false);
                                         class="block h-9 w-auto fill-current text-gray-800"
                                     />
                                 </Link>
+                                <Link :href="route('search')">
+                                    <ApplicationLogo
+                                        class="block h-9 w-auto fill-current text-gray-800"
+                                    />
+                                </Link>
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
+                                </NavLink>
+                                <NavLink :href="route('search')" :active="route().current('search')">
+                                    Search
                                 </NavLink>
                             </div>
                         </div>
