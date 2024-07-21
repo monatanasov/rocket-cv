@@ -10,10 +10,10 @@ class SearchController extends Controller
 {
     public function index()
     {
-        $cvList = CV::all();
+        $cvList = CV::query();
 
         return Inertia::render('Search', [
-            'cvList' => CvResource::collection($cvList->load('university')),
+            'cvList' => CvResource::collection($cvList->with('university')->get()),
         ]);
     }
 }
