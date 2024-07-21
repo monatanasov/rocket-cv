@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\CV;
 use App\Models\User;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 class CvTest extends TestCase
@@ -188,5 +189,45 @@ class CvTest extends TestCase
             ->postJson($this->storeRoute(), $cv)
             ->assertUnprocessable()
             ->assertInvalid([CV::SURNAME]);
+    }
+
+    public function testStoreValidateBirthDateIsRequired()
+    {
+        $user = User::first();
+        $cv = CV::factory()->raw();
+        unset($cv[CV::BIRTH_DATE]);
+
+        $this
+            ->actingAs($user)
+            ->postJson($this->storeRoute(), $cv)
+            ->assertUnprocessable()
+            ->assertInvalid([CV::BIRTH_DATE]);
+    }
+
+    public function testStoreValidateBirthDateIsDate()
+    {
+        $user = User::first();
+        $cv = CV::factory()->raw();
+        $cv[CV::BIRTH_DATE] = 'This must be date';
+
+        $this
+            ->actingAs($user)
+            ->postJson($this->storeRoute(), $cv)
+            ->assertUnprocessable()
+            ->assertInvalid([CV::BIRTH_DATE]);
+    }
+
+    public function testStoreValidateBirthDateIsBeforeToday()
+    {
+        $now = Carbon::now();
+        $user = User::first();
+        $cv = CV::factory()->raw();
+        $cv[CV::BIRTH_DATE] = $now->clone()->addDay()->format('YYYY-MM-DD');
+
+        $this
+            ->actingAs($user)
+            ->postJson($this->storeRoute(), $cv)
+            ->assertUnprocessable()
+            ->assertInvalid([CV::BIRTH_DATE]);
     }
 }
