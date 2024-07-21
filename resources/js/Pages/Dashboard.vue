@@ -1,6 +1,5 @@
 
 <template>
-    <Head title="Dashboard" />
     <AuthenticatedLayout>
         <form @submit.prevent>
             <div class="flex flex-col max-w-screen-xl mx-auto my-4 gap-2 border-2 border-red-500">
@@ -69,34 +68,76 @@
                 <p-button
                     label="Запис на CV"
                     class="max-w-sm"
+                    @click="storeCV"
+
                 />
             </div>
         </form>
+        {{ cvList }}
     </AuthenticatedLayout>
 </template>
 
-<script setup>
+<script>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
 import pInputText from 'primevue/inputtext';
 import pCalendar from 'primevue/calendar';
 import pDropdown from 'primevue/dropdown';
 import pButton from 'primevue/button';
 import pMultiSelect from 'primevue/multiselect';
+import dayjs from 'dayjs';
+import axios from 'axios';
+export default {
+    name: 'cv-page',
+    components: {
+        AuthenticatedLayout,
+        pInputText,
+        pCalendar,
+        pDropdown,
+        pButton,
+        pMultiSelect,
+    },
+    props: {
+        cvList: Array,
+    },
+    data() {
+        return {
+            name: '',
+            fathersName: '',
+            surname: '',
+            birthDate: null,
+            selectedUniversity: null,
+            university: [
+                { name: 'University of Economics', code: '1' },
+                { name: 'Technical University', code: '2' },
+            ],
+            selectedSkill: null,
+            skills: [
+                { name: 'PHP', code: '1' },
+                { name: 'Laravel', code: '2' },
+            ]
+        };
+    },
+    methods: {
+        storeCV() {
+            const path = 'dashboard';
 
-const name = ref(null);
-const fathersName = ref(null);
-const surname = ref(null);
-const birthDate = ref();
-const selectedUniversity = ref();
-const university = ref([
-    { name: 'University of Economics', code: 'UE' },
-    { name: 'Technical University', code: 'TU' },
-]);
-const selectedSkill = ref();
-const skills = ref([
-    { name: 'PHP', code: 'PHP' },
-    { name: 'Laravel', code: 'LV' },
-]);
+            const data = {
+                first_name: this.name,
+                father_name: this.fathersName,
+                surname: this.surname,
+                birth_date: dayjs(this.birthDate).format('YYYY-MM-DD'),
+                university_id: this.selectedUniversity.code,
+            }
+
+            axios.post(path, data)
+                .then(() => {
+                    console.log('axios stored');
+                })
+                .catch((error) => {
+                    console.log('axios error');
+                    console.log(data);
+                });
+        },
+    },
+}
 </script>
