@@ -85,4 +85,56 @@ class CvTest extends TestCase
             ->assertUnprocessable()
             ->assertInvalid([CV::FIRST_NAME]);
     }
+
+    public function testStoreValidateFatherNameIsRequired()
+    {
+        $user = User::first();
+        $cv = CV::factory()->raw();
+        unset($cv[CV::FATHER_NAME]);
+
+        $this
+            ->actingAs($user)
+            ->postJson($this->storeRoute(), $cv)
+            ->assertUnprocessable()
+            ->assertInvalid([CV::FATHER_NAME]);
+    }
+
+    public function testStoreValidateFatherNameIsString()
+    {
+        $user = User::first();
+        $cv = CV::factory()->raw();
+        $cv[CV::FATHER_NAME] = 1979;
+
+        $this
+            ->actingAs($user)
+            ->postJson($this->storeRoute(), $cv)
+            ->assertUnprocessable()
+            ->assertInvalid([CV::FATHER_NAME]);
+    }
+
+    public function testStoreValidateFatherNameHasMinCharacters()
+    {
+        $user = User::first();
+        $cv = CV::factory()->raw();
+        $cv[CV::FATHER_NAME] = 'R';
+
+        $this
+            ->actingAs($user)
+            ->postJson($this->storeRoute(), $cv)
+            ->assertUnprocessable()
+            ->assertInvalid([CV::FATHER_NAME]);
+    }
+
+    public function testStoreValidateFatherNameHasMaxCharacters()
+    {
+        $user = User::first();
+        $cv = CV::factory()->raw();
+        $cv[CV::FIRST_NAME] = str_repeat('R', 51);
+
+        $this
+            ->actingAs($user)
+            ->postJson($this->storeRoute(), $cv)
+            ->assertUnprocessable()
+            ->assertInvalid([CV::FIRST_NAME]);
+    }
 }
