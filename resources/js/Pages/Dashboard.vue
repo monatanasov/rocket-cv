@@ -41,7 +41,7 @@
                 <div class="flex justify-between max-w-sm">
                     <p-dropdown
                         v-model="selectedUniversity"
-                        :options="university"
+                        :options="uniList.data"
                         optionLabel="name"
                         placeholder="Изберете университет..."
                         class="w-full md:w-14rem mr-4"
@@ -73,7 +73,8 @@
                 />
             </div>
         </form>
-        {{ cvList }}
+<!--        {{ cvList }}-->
+        {{ uniList }}
     </AuthenticatedLayout>
 </template>
 
@@ -98,6 +99,7 @@ export default {
     },
     props: {
         cvList: Array,
+        uniList: Array,
     },
     data() {
         return {
@@ -106,10 +108,6 @@ export default {
             surname: '',
             birthDate: null,
             selectedUniversity: null,
-            university: [
-                { name: 'University of Economics', code: '1' },
-                { name: 'Technical University', code: '2' },
-            ],
             selectedSkill: null,
             skills: [
                 { name: 'PHP', code: '1' },
