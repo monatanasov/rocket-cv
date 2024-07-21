@@ -14,11 +14,32 @@ class CvStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => [],
-            'father_name' => [],
-            'surname' => [],
-            'birth_date' => [],
-            'university_id' => [],
+            'first_name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:50',
+            ],
+            'father_name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:50',
+            ],
+            'surname' => [
+                'required',
+                'string',
+                'min:3',
+                'max:50',
+            ],
+            'birth_date' => [
+                'required',
+                'date',
+                'before:today',
+            ],
+            'university_id' => [
+                'required',
+            ],
         ];
     }
 }
