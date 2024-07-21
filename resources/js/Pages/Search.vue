@@ -36,6 +36,7 @@
                 <p-column field="middle_name" header="Презиме"></p-column>
                 <p-column field="last_name" header="Фамилия"></p-column>
                 <p-column field="birthDate" header="Дата на раждане"></p-column>
+                <p-column field="university.name" header="Университет"></p-column>
             </p-data-table>
         </div>
     </AuthenticatedLayout>
