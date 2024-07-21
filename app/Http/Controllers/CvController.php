@@ -6,6 +6,7 @@ use App\Http\Requests\CvStoreRequest;
 use App\Http\Resources\CvResource;
 use App\Http\Resources\UniversityResource;
 use App\Models\CV;
+use App\Models\TechSkill;
 use App\Models\University;
 use Inertia\Inertia;
 
@@ -15,10 +16,12 @@ class CvController extends Controller
     {
         $cvList = CV::all();
         $uniList = University::all();
+        $techSkillsList = TechSkill::all();
 
         return Inertia::render('Dashboard', [
             'cvList' => CvResource::collection($cvList->load('university')),
-            'uniList' => UniversityResource::collection($uniList)
+            'uniList' => UniversityResource::collection($uniList),
+            'techSkillsList' => UniversityResource::collection($techSkillsList),
         ]);
     }
 

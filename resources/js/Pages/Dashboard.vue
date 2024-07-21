@@ -54,9 +54,9 @@
                 <div class="flex justify-between max-w-sm">
                     <p-multi-select
                         v-model="selectedSkill"
-                        :options="skills"
+                        :options="techSkillsList.data"
                         optionLabel="name"
-                        placeholder="Select Cities"
+                        placeholder="Умения в технологии..."
                         :maxSelectedLabels="3"
                         class="w-full md:w-20rem mr-4"
                     />
@@ -98,8 +98,9 @@ export default {
         pMultiSelect,
     },
     props: {
-        cvList: Array,
-        uniList: Array,
+        cvList: Object,
+        uniList: Object,
+        techSkillsList: Object,
     },
     data() {
         return {
@@ -124,7 +125,7 @@ export default {
                 father_name: this.fathersName,
                 surname: this.surname,
                 birth_date: dayjs(this.birthDate).format('YYYY-MM-DD'),
-                university_id: this.selectedUniversity.code,
+                university_id: this.selectedUniversity.id,
             }
 
             axios.post(path, data)
