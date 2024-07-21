@@ -57,7 +57,12 @@ class CvController extends Controller
 
     public function store(CvStoreRequest $request)
     {
-        $cv = Cv::create($request->validated());
+        $data = $request->validated();
+        $cv = Cv::create($data);
+
+        if (array_key_exists('skills', $data)) {
+            $cv->techSkills()->sync($data['skills']);
+        }
 
         return new CvResource($cv);
     }

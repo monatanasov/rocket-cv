@@ -86,6 +86,7 @@
                     <p-button
                         icon="pi pi-pencil"
                         aria-label="Submit"
+                        @click="storeUniversity"
                     />
                 </div>
                 <div class="flex justify-between max-w-sm">
@@ -100,6 +101,7 @@
                     <p-button
                         icon="pi pi-pencil"
                         aria-label="Submit"
+                        @click="storeTechSkill"
                     />
                 </div>
                 <p-button
@@ -156,12 +158,17 @@ export default {
         async storeCV() {
             const path = 'dashboard';
 
+            let skillIds = this.selectedSkill.map((skill) => {
+                return skill.id;
+            });
+
             const data = {
                 first_name: this.name,
                 father_name: this.fathersName,
                 surname: this.surname,
                 birth_date: dayjs(this.birthDate).format('YYYY-MM-DD'),
                 university_id: this.selectedUniversity.id,
+                skills: skillIds,
             }
 
             await axios.post(path, data)
@@ -172,6 +179,12 @@ export default {
                 .catch((response) => {
                     this.errors = response.response.data.errors;
                 });
+        },
+        async storeUniversity() {
+            //
+        },
+        async storeTechSkill() {
+            //
         },
         clearFields() {
             this.name = '';

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\TechSkill;
 use App\Models\University;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -42,6 +43,13 @@ class CvStoreRequest extends FormRequest
             'university_id' => [
                 'nullable',
                 Rule::exists(University::TABLE, University::ID),
+            ],
+            'skills' => [
+                'array'
+            ],
+            'skills.*' => [
+                Rule::exists(TechSkill::TABLE, TechSkill::ID),
+                'distinct'
             ],
         ];
     }
