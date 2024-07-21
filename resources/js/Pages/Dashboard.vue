@@ -86,7 +86,7 @@
                     <p-button
                         icon="pi pi-pencil"
                         aria-label="Submit"
-                        @click="storeUniversity"
+                        @click="visible = true"
                     />
                 </div>
                 <div class="flex justify-between max-w-sm">
@@ -111,8 +111,36 @@
                 />
             </div>
         </form>
-<!--        {{ cvList }}-->
-        {{ uniList }}
+        <p-dialog
+            v-model:visible="visible"
+            modal
+            header="Edit Profile"
+            :style="{ width: '25rem' }"
+        >
+            <span class="p-text-secondary block mb-5">Добавяне на университет</span>
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="universityName" class="font-semibold w-6rem">Име</label>
+                <p-input-text
+                    v-model="universityName"
+                    id="universityName"
+                    class="flex-auto"
+                    autocomplete="off"
+                />
+            </div>
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="universityEvaluation" class="font-semibold w-6rem">Акредитационна оценка</label>
+                <p-input-text
+                    v-model="universityEvaluation"
+                    id="universityEvaluation"
+                    class="flex-auto"
+                    autocomplete="off"
+                />
+            </div>
+            <div class="flex justify-content-end gap-2">
+                <p-button type="button" label="Cancel" severity="secondary" @click="visible = false"></p-button>
+                <p-button type="button" label="Save" @click="storeUniversity"></p-button>
+            </div>
+        </p-dialog>
     </AuthenticatedLayout>
 </template>
 
@@ -125,6 +153,8 @@ import pButton from 'primevue/button';
 import pMultiSelect from 'primevue/multiselect';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import pDialog from 'primevue/dialog';
+
 export default {
     name: 'cv-page',
     components: {
@@ -134,6 +164,7 @@ export default {
         pDropdown,
         pButton,
         pMultiSelect,
+        pDialog,
     },
     props: {
         cvList: Object,
@@ -149,6 +180,9 @@ export default {
             selectedUniversity: null,
             selectedSkill: null,
             errors: [],
+            visible: false,
+            universityName: '',
+            universityEvaluation: ''
         };
     },
     created() {
@@ -181,7 +215,24 @@ export default {
                 });
         },
         async storeUniversity() {
-            //
+            const path = 'universities';
+
+            const data = {
+                name: this.universityName,
+                evaluation: this.universityEvaluation,
+            }
+
+            await axios.post(path, data)
+                .then((response) => {
+                    this.visible = false;
+                    this.universityName = '';
+                    this.universityEvaluation = '';
+                    this.uniList.data.push(response.data.data);
+                    this.selectedUniversity = response.data.data;
+                })
+                .catch((response) => {
+                    // this.errors = response.response.data.errors;
+                });
         },
         async storeTechSkill() {
             //
