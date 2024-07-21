@@ -38,8 +38,6 @@
                 <p-column field="birthDate" header="Дата на раждане"></p-column>
             </p-data-table>
         </div>
-
-        {{ cvList.data }}
     </AuthenticatedLayout>
 </template>
 
@@ -50,7 +48,8 @@ import pCalendar from 'primevue/calendar';
 import pDataTable from 'primevue/datatable';
 import pColumn from 'primevue/column';
 import pButton from 'primevue/button';
-import axios from "axios";
+import axios from 'axios';
+import dayjs from 'dayjs';
 
 export default {
     name: 'search-page',
@@ -74,34 +73,20 @@ export default {
 
     },
     methods: {
-        // async searchCVS() {
-        //     let params = new URLSearchParams({
-        //         startDate: whereStartDate,
-        //         endDate: whereEndDate,
-        //     });
-        //
-        //     console.log(params);
-        //
-        //     let path = '';
+        async searchCVS() {
+            let whereStartDate = dayjs(this.startDate).format('YYYY-MM-DD');
+            let whereEndDate = dayjs(this.endDate).format('YYYY-MM-DD')
+            let path = `search?whereStartDate=${whereStartDate}&whereEndDate=${whereEndDate}&wantsJson=1`;
 
-            // await axios.get(path)
-            //     .then(() => {
-            //         console.log('axios stored');
-            //     })
-            //     .catch((response) => {
-            //         console.log('axios error');
-            //         // this.errors = response.response.data.errors;
-            //     });
-        // },
-        // updateUrl() {
-        //     this.$router.push({
-        //         path: '/search',
-        //         query: {
-        //             startDate: whereStartDate,
-        //             endDate: whereEndDate,
-        //         },
-        //     });
-        // },
+            await axios.get(path)
+                .then((response) => {
+                    this.cvList.data = response.data.data;
+                })
+                .catch((response) => {
+                    alert('error');
+                    // this.errors = response.response.data.errors;
+                });
+        },
     },
 
 }
