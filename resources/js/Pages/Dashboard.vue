@@ -101,7 +101,7 @@
                     <p-button
                         icon="pi pi-pencil"
                         aria-label="Submit"
-                        @click="storeTechSkill"
+                        @click="showSkillsModal = true"
                     />
                 </div>
                 <p-button
@@ -114,10 +114,9 @@
         <p-dialog
             v-model:visible="showUniversityModal"
             modal
-            header="Edit Profile"
+            header="Добавяне на университет"
             :style="{ width: '25rem' }"
         >
-            <span class="p-text-secondary block mb-5">Добавяне на университет</span>
             <div class="flex align-items-center gap-3 mb-3">
                 <label for="universityName" class="font-semibold w-6rem">Име</label>
                 <p-input-text
@@ -139,6 +138,27 @@
             <div class="flex justify-content-end gap-2">
                 <p-button type="button" label="Cancel" severity="secondary" @click="showUniversityModal = false"></p-button>
                 <p-button type="button" label="Save" @click="storeUniversity"></p-button>
+            </div>
+        </p-dialog>
+
+        <p-dialog
+            v-model:visible="showSkillsModal"
+            modal
+            header="Добавяне на умение"
+            :style="{ width: '25rem' }"
+        >
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="skillName" class="font-semibold w-6rem">Име</label>
+                <p-input-text
+                    v-model="skillName"
+                    id="skillName"
+                    class="flex-auto"
+                    autocomplete="off"
+                />
+            </div>
+            <div class="flex justify-content-end gap-2">
+                <p-button type="button" label="Cancel" severity="secondary" @click="showSkillsModal = false"></p-button>
+                <p-button type="button" label="Save" @click="storeTechSkill"></p-button>
             </div>
         </p-dialog>
     </AuthenticatedLayout>
@@ -182,7 +202,9 @@ export default {
             errors: [],
             showUniversityModal: false,
             universityName: '',
-            universityEvaluation: ''
+            universityEvaluation: '',
+            showSkillsModal: false,
+            skillName: ''
         };
     },
     created() {
@@ -235,7 +257,22 @@ export default {
                 });
         },
         async storeTechSkill() {
-            //
+            const path = 'tech-skills';
+
+            const data = {
+                name: this.skillName,
+            }
+
+            await axios.post(path, data)
+                .then((response) => {
+                    this.showSkillsModal = false;
+                    this.skillName = '';
+                    this.techSkillsList.data.push(response.data.data);
+                    this.selectedSkill.push(response.data.data);
+                })
+                .catch((response) => {
+                    // this.errors = response.response.data.errors;
+                });
         },
         clearFields() {
             this.name = '';
