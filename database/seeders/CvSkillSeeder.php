@@ -13,6 +13,6 @@ class CvSkillSeeder extends Seeder
         $firstCV = CV::first();
         $firstSkill = TechSkill::first();
 
-        $firstCV->techSkill()->attach($firstSkill);
+        $firstCV->techSkills()->attach($firstSkill);
     }
 }
