@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CvStoreRequest;
+use App\Http\Requests\CvIndexRequest;
 use App\Http\Resources\CvResource;
 use App\Http\Resources\UniversityResource;
 use App\Models\CV;
@@ -12,7 +13,29 @@ use Inertia\Inertia;
 
 class CvController extends Controller
 {
-    public function index()
+    public function index(CvIndexRequest $request)
+    {
+        $cvList = CV::query();
+
+        if (
+            array_key_exists(CvIndexRequest::WHERE_START_DATE, $request->validated())
+            && array_key_exists(CvIndexRequest::WHERE_END_DATE, $request->validated())
+        ) {
+            $cvList = $cvList->whereBetween(CV::BIRTH_DATE, [
+                $request->validated()[CvIndexRequest::WHERE_START_DATE],
+                $request->validated()[CvIndexRequest::WHERE_END_DATE]
+            ]);
+        }
+
+        return Inertia::render('Search', [
+            'cvList' => CvResource::collection(
+                $cvList
+                    ->with('university')
+                    ->get()
+            ),
+        ]);
+    }
+    public function create()
     {
         $cvList = CV::all();
         $uniList = University::all();

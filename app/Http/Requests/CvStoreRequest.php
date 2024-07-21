@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\University;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -39,7 +40,8 @@ class CvStoreRequest extends FormRequest
                 'before:today',
             ],
             'university_id' => [
-                'required',
+                'nullable',
+                Rule::exists(University::TABLE, University::ID),
             ],
         ];
     }

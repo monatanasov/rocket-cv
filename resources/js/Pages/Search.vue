@@ -1,6 +1,6 @@
 <template>
     <AuthenticatedLayout>
-        <div class="flex flex-row justify-between max-w-xl mx-auto my-4">
+        <div class="flex flex-row justify-between max-w-2xl mx-auto my-4">
             <div class="flex flex-col">
                 <label for="startDate">Начална дата</label>
                 <p-calendar
@@ -21,6 +21,11 @@
                     inputId="endDate"
                 />
             </div>
+            <p-button
+                label="Търсене"
+                class=""
+                @click="searchCVS"
+            />
         </div>
         <div class="mx-auto my-4 max-w-6xl">
             <p-data-table
@@ -44,6 +49,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import pCalendar from 'primevue/calendar';
 import pDataTable from 'primevue/datatable';
 import pColumn from 'primevue/column';
+import pButton from 'primevue/button';
+import axios from "axios";
 
 export default {
     name: 'search-page',
@@ -52,6 +59,7 @@ export default {
         pCalendar,
         pDataTable,
         pColumn,
+        pButton,
     },
     props: {
         cvList: Object,
@@ -62,6 +70,40 @@ export default {
             endDate: null,
         };
     },
+    created() {
+
+    },
+    methods: {
+        // async searchCVS() {
+        //     let params = new URLSearchParams({
+        //         startDate: whereStartDate,
+        //         endDate: whereEndDate,
+        //     });
+        //
+        //     console.log(params);
+        //
+        //     let path = '';
+
+            // await axios.get(path)
+            //     .then(() => {
+            //         console.log('axios stored');
+            //     })
+            //     .catch((response) => {
+            //         console.log('axios error');
+            //         // this.errors = response.response.data.errors;
+            //     });
+        // },
+        // updateUrl() {
+        //     this.$router.push({
+        //         path: '/search',
+        //         query: {
+        //             startDate: whereStartDate,
+        //             endDate: whereEndDate,
+        //         },
+        //     });
+        // },
+    },
+
 }
 </script>
 

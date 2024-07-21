@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('father_name', 50);
             $table->string('surname', 50);
             $table->date('birth_date');
-            $table->unsignedBigInteger('university_id');
+            $table->unsignedBigInteger('university_id')->nullable();
             $table->timestamps();
 
             $table

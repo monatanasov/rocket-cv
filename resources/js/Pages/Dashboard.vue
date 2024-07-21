@@ -106,7 +106,6 @@
                     label="Запис на CV"
                     class="max-w-sm"
                     @click="storeCV"
-
                 />
             </div>
         </form>
@@ -173,8 +172,6 @@ export default {
                 .catch((response) => {
                     this.errors = response.response.data.errors;
                 });
-
-            console.log(this.errors);
         },
         clearFields() {
             this.name = '';
