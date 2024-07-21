@@ -11,6 +11,14 @@
                         v-model="name"
                         placeholder="Име..."
                     />
+                    <div v-if="errors">
+                        <p
+                            v-for="error in errors.first_name"
+                            :key="error" class="text-red-600"
+                        >
+                            {{ error }}
+                        </p>
+                    </div>
                 </div>
                 <div class="flex flex-col max-w-sm">
                     <label for="fathersName">Презиме:</label>
@@ -19,6 +27,14 @@
                         v-model="fathersName"
                         placeholder="Презиме..."
                     />
+                    <div v-if="errors">
+                        <p
+                            v-for="error in errors.father_name"
+                            :key="error" class="text-red-600"
+                        >
+                            {{ error }}
+                        </p>
+                    </div>
                 </div>
                 <div class="flex flex-col max-w-sm">
                     <label for="surname">Фамилия:</label>
@@ -27,16 +43,36 @@
                         v-model="surname"
                         placeholder="Фамилия..."
                     />
+                    <div v-if="errors">
+                        <p
+                            v-for="error in errors.surname"
+                            :key="error" class="text-red-600"
+                        >
+                            {{ error }}
+                        </p>
+                    </div>
                 </div>
-                <div class="flex justify-between items-center max-w-sm">
-                    <label for="birthDate">Дата на раждане:</label>
-                    <p-calendar
-                        v-model="birthDate"
-                        class="flex"
-                        showIcon
-                        iconDisplay="input"
-                        inputId="birthDate"
-                    />
+
+                <div class="flex flex-col justify-between max-w-sm">
+
+                    <div class="flex justify-between items-center max-w-sm">
+                        <label for="birthDate">Дата на раждане:</label>
+                        <p-calendar
+                            v-model="birthDate"
+                            class="flex"
+                            showIcon
+                            iconDisplay="input"
+                            inputId="birthDate"
+                        />
+                    </div>
+                    <div v-if="errors">
+                        <p
+                            v-for="error in errors.birth_date"
+                            :key="error" class="text-red-600"
+                        >
+                            {{ error }}
+                        </p>
+                    </div>
                 </div>
                 <div class="flex justify-between max-w-sm">
                     <p-dropdown
@@ -110,14 +146,14 @@ export default {
             birthDate: null,
             selectedUniversity: null,
             selectedSkill: null,
-            skills: [
-                { name: 'PHP', code: '1' },
-                { name: 'Laravel', code: '2' },
-            ]
+            errors: [],
         };
     },
+    created() {
+        this.errors = [];
+    },
     methods: {
-        storeCV() {
+        async storeCV() {
             const path = 'dashboard';
 
             const data = {
@@ -128,15 +164,26 @@ export default {
                 university_id: this.selectedUniversity.id,
             }
 
-            axios.post(path, data)
+            await axios.post(path, data)
                 .then(() => {
+                    this.clearFields()
                     console.log('axios stored');
                 })
-                .catch((error) => {
-                    console.log('axios error');
-                    console.log(data);
+                .catch((response) => {
+                    this.errors = response.response.data.errors;
                 });
+
+            console.log(this.errors);
         },
+        clearFields() {
+            this.name = '';
+            this.fathersName = '';
+            this.surname = '';
+            this.birthDate = null;
+            this.selectedUniversity = null;
+            this.selectedSkill = null;
+            this.errors = [];
+        }
     },
 }
 </script>
