@@ -61,6 +61,7 @@
                             v-model="birthDate"
                             class="flex"
                             showIcon
+                            date-format="yy-mm-dd"
                             iconDisplay="input"
                             inputId="birthDate"
                         />
