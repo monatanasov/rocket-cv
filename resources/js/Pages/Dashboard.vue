@@ -2,7 +2,7 @@
 <template>
     <AuthenticatedLayout>
         <form @submit.prevent>
-            <div class="flex flex-col max-w-screen-xl mx-auto my-4 gap-2 border-2 border-red-500">
+            <div class="flex flex-col max-w-screen-xl mx-auto my-4 gap-2">
                 <label class="flex justify-center max-w-sm text-2xl font-medium">Създаване на CV</label>
                 <div class="flex flex-col max-w-sm">
                     <label for="name">Име:</label>
