@@ -86,7 +86,7 @@
                     <p-button
                         icon="pi pi-pencil"
                         aria-label="Submit"
-                        @click="visible = true"
+                        @click="showUniversityModal = true"
                     />
                 </div>
                 <div class="flex justify-between max-w-sm">
@@ -112,7 +112,7 @@
             </div>
         </form>
         <p-dialog
-            v-model:visible="visible"
+            v-model:visible="showUniversityModal"
             modal
             header="Edit Profile"
             :style="{ width: '25rem' }"
@@ -137,7 +137,7 @@
                 />
             </div>
             <div class="flex justify-content-end gap-2">
-                <p-button type="button" label="Cancel" severity="secondary" @click="visible = false"></p-button>
+                <p-button type="button" label="Cancel" severity="secondary" @click="showUniversityModal = false"></p-button>
                 <p-button type="button" label="Save" @click="storeUniversity"></p-button>
             </div>
         </p-dialog>
@@ -180,7 +180,7 @@ export default {
             selectedUniversity: null,
             selectedSkill: null,
             errors: [],
-            visible: false,
+            showUniversityModal: false,
             universityName: '',
             universityEvaluation: ''
         };
@@ -224,7 +224,7 @@ export default {
 
             await axios.post(path, data)
                 .then((response) => {
-                    this.visible = false;
+                    this.showUniversityModal = false;
                     this.universityName = '';
                     this.universityEvaluation = '';
                     this.uniList.data.push(response.data.data);
