@@ -5,7 +5,7 @@
             <div class="flex flex-col max-w-screen-xl mx-auto my-4 gap-2">
                 <label class="flex justify-center max-w-sm text-2xl font-medium">Създаване на CV</label>
                 <div class="flex flex-col max-w-sm">
-                    <label for="name">Име:</label>
+                    <label for="name">Име:<asterisk /></label>
                     <p-input-text
                         id="name"
                         v-model="name"
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col max-w-sm">
-                    <label for="fathersName">Презиме:</label>
+                    <label for="fathersName">Презиме:<asterisk /></label>
                     <p-input-text
                         id="fathersName"
                         v-model="fathersName"
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col max-w-sm">
-                    <label for="surname">Фамилия:</label>
+                    <label for="surname">Фамилия:<asterisk /></label>
                     <p-input-text
                         id="surname"
                         v-model="surname"
@@ -56,7 +56,7 @@
                 <div class="flex flex-col justify-between max-w-sm">
 
                     <div class="flex justify-between items-center max-w-sm">
-                        <label for="birthDate">Дата на раждане:</label>
+                        <label for="birthDate">Дата на раждане:<asterisk /></label>
                         <p-calendar
                             v-model="birthDate"
                             class="flex"
@@ -90,10 +90,12 @@
                     />
                 </div>
                 <div class="max-w-sm">
+                    <label for="selectedSkill">Умения:<asterisk /></label>
                     <div class="flex justify-between">
                         <p-multi-select
                             v-model="selectedSkill"
                             :options="techSkillsList.data"
+                            inputId="selectedSkill"
                             optionLabel="name"
                             placeholder="Умения в технологии..."
                             :maxSelectedLabels="3"
@@ -113,6 +115,11 @@
                             {{ error }}
                         </p>
                     </div>
+                </div>
+                <div class="text-red-600">
+                    <asterisk
+                        :showText="true"
+                    />
                 </div>
                 <p-button
                     label="Запис на CV"
@@ -184,6 +191,7 @@ import pMultiSelect from 'primevue/multiselect';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import pDialog from 'primevue/dialog';
+import asterisk from '../Components/asterisk.vue';
 
 export default {
     name: 'cv-page',
@@ -195,6 +203,7 @@ export default {
         pButton,
         pMultiSelect,
         pDialog,
+        asterisk,
     },
     props: {
         cvList: Object,
