@@ -134,7 +134,7 @@
             header="Добавяне на университет"
             :style="{ width: '25rem' }"
         >
-            <div class="flex align-items-center gap-3 mb-3">
+            <div class="flex flex-col">
                 <label for="universityName" class="font-semibold w-6rem">Име</label>
                 <p-input-text
                     v-model="universityName"
@@ -143,7 +143,7 @@
                     autocomplete="off"
                 />
             </div>
-            <div class="flex align-items-center gap-3 mb-3">
+            <div class="flex flex-col mb-3">
                 <label for="universityEvaluation" class="font-semibold w-6rem">Акредитационна оценка</label>
                 <p-input-text
                     v-model="universityEvaluation"
@@ -152,7 +152,7 @@
                     autocomplete="off"
                 />
             </div>
-            <div class="flex justify-content-end gap-2">
+            <div class="flex justify-end gap-2">
                 <p-button type="button" label="Cancel" severity="secondary" @click="showUniversityModal = false"></p-button>
                 <p-button type="button" label="Save" @click="storeUniversity"></p-button>
             </div>
