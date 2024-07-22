@@ -16,6 +16,8 @@ class UniversityStoreRequest extends FormRequest
         return [
             'name' => [
                 'required',
+                'min:3',
+                'max:200',
             ],
             'evaluation' => [
                 'required',
