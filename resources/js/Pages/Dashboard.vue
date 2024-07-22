@@ -1,6 +1,5 @@
 
 <template>
-    <Head title="Dashboard" />
     <AuthenticatedLayout>
         <form @submit.prevent>
             <div class="flex flex-col max-w-screen-xl mx-auto my-4 gap-2 border-2 border-red-500">
@@ -12,6 +11,14 @@
                         v-model="name"
                         placeholder="Име..."
                     />
+                    <div v-if="errors">
+                        <p
+                            v-for="error in errors.first_name"
+                            :key="error" class="text-red-600"
+                        >
+                            {{ error }}
+                        </p>
+                    </div>
                 </div>
                 <div class="flex flex-col max-w-sm">
                     <label for="fathersName">Презиме:</label>
@@ -20,6 +27,14 @@
                         v-model="fathersName"
                         placeholder="Презиме..."
                     />
+                    <div v-if="errors">
+                        <p
+                            v-for="error in errors.father_name"
+                            :key="error" class="text-red-600"
+                        >
+                            {{ error }}
+                        </p>
+                    </div>
                 </div>
                 <div class="flex flex-col max-w-sm">
                     <label for="surname">Фамилия:</label>
@@ -28,21 +43,41 @@
                         v-model="surname"
                         placeholder="Фамилия..."
                     />
+                    <div v-if="errors">
+                        <p
+                            v-for="error in errors.surname"
+                            :key="error" class="text-red-600"
+                        >
+                            {{ error }}
+                        </p>
+                    </div>
                 </div>
-                <div class="flex justify-between items-center max-w-sm">
-                    <label for="birthDate">Дата на раждане:</label>
-                    <p-calendar
-                        v-model="birthDate"
-                        class="flex"
-                        showIcon
-                        iconDisplay="input"
-                        inputId="birthDate"
-                    />
+
+                <div class="flex flex-col justify-between max-w-sm">
+
+                    <div class="flex justify-between items-center max-w-sm">
+                        <label for="birthDate">Дата на раждане:</label>
+                        <p-calendar
+                            v-model="birthDate"
+                            class="flex"
+                            showIcon
+                            iconDisplay="input"
+                            inputId="birthDate"
+                        />
+                    </div>
+                    <div v-if="errors">
+                        <p
+                            v-for="error in errors.birth_date"
+                            :key="error" class="text-red-600"
+                        >
+                            {{ error }}
+                        </p>
+                    </div>
                 </div>
                 <div class="flex justify-between max-w-sm">
                     <p-dropdown
                         v-model="selectedUniversity"
-                        :options="university"
+                        :options="uniList.data"
                         optionLabel="name"
                         placeholder="Изберете университет..."
                         class="w-full md:w-14rem mr-4"
@@ -55,9 +90,9 @@
                 <div class="flex justify-between max-w-sm">
                     <p-multi-select
                         v-model="selectedSkill"
-                        :options="skills"
+                        :options="techSkillsList.data"
                         optionLabel="name"
-                        placeholder="Select Cities"
+                        placeholder="Умения в технологии..."
                         :maxSelectedLabels="3"
                         class="w-full md:w-20rem mr-4"
                     />
@@ -69,34 +104,86 @@
                 <p-button
                     label="Запис на CV"
                     class="max-w-sm"
+                    @click="storeCV"
+
                 />
             </div>
         </form>
+<!--        {{ cvList }}-->
+        {{ uniList }}
     </AuthenticatedLayout>
 </template>
 
-<script setup>
+<script>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
 import pInputText from 'primevue/inputtext';
 import pCalendar from 'primevue/calendar';
 import pDropdown from 'primevue/dropdown';
 import pButton from 'primevue/button';
 import pMultiSelect from 'primevue/multiselect';
+import dayjs from 'dayjs';
+import axios from 'axios';
+export default {
+    name: 'cv-page',
+    components: {
+        AuthenticatedLayout,
+        pInputText,
+        pCalendar,
+        pDropdown,
+        pButton,
+        pMultiSelect,
+    },
+    props: {
+        cvList: Object,
+        uniList: Object,
+        techSkillsList: Object,
+    },
+    data() {
+        return {
+            name: '',
+            fathersName: '',
+            surname: '',
+            birthDate: null,
+            selectedUniversity: null,
+            selectedSkill: null,
+            errors: [],
+        };
+    },
+    created() {
+        this.errors = [];
+    },
+    methods: {
+        async storeCV() {
+            const path = 'dashboard';
 
-const name = ref(null);
-const fathersName = ref(null);
-const surname = ref(null);
-const birthDate = ref();
-const selectedUniversity = ref();
-const university = ref([
-    { name: 'University of Economics', code: 'UE' },
-    { name: 'Technical University', code: 'TU' },
-]);
-const selectedSkill = ref();
-const skills = ref([
-    { name: 'PHP', code: 'PHP' },
-    { name: 'Laravel', code: 'LV' },
-]);
+            const data = {
+                first_name: this.name,
+                father_name: this.fathersName,
+                surname: this.surname,
+                birth_date: dayjs(this.birthDate).format('YYYY-MM-DD'),
+                university_id: this.selectedUniversity.id,
+            }
+
+            await axios.post(path, data)
+                .then(() => {
+                    this.clearFields()
+                    console.log('axios stored');
+                })
+                .catch((response) => {
+                    this.errors = response.response.data.errors;
+                });
+
+            console.log(this.errors);
+        },
+        clearFields() {
+            this.name = '';
+            this.fathersName = '';
+            this.surname = '';
+            this.birthDate = null;
+            this.selectedUniversity = null;
+            this.selectedSkill = null;
+            this.errors = [];
+        }
+    },
+}
 </script>
