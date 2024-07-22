@@ -157,15 +157,14 @@
                 <p-button type="button" label="Save" @click="storeUniversity"></p-button>
             </div>
         </p-dialog>
-
         <p-dialog
             v-model:visible="showSkillsModal"
             modal
             header="Добавяне на умение"
             :style="{ width: '25rem' }"
         >
-            <div class="flex align-items-center gap-3 mb-3">
-                <label for="skillName" class="font-semibold w-6rem">Име</label>
+            <div class="flex flex-col mb-3">
+                <label for="skillName" class="font-semibold">Име</label>
                 <p-input-text
                     v-model="skillName"
                     id="skillName"
@@ -173,7 +172,7 @@
                     autocomplete="off"
                 />
             </div>
-            <div class="flex justify-content-end gap-2">
+            <div class="flex justify-end gap-2">
                 <p-button type="button" label="Cancel" severity="secondary" @click="showSkillsModal = false"></p-button>
                 <p-button type="button" label="Save" @click="storeTechSkill"></p-button>
             </div>
