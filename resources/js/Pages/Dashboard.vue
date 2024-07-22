@@ -242,7 +242,7 @@ export default {
             surname: '',
             birthDate: null,
             selectedUniversity: null,
-            selectedSkill: null,
+            selectedSkill: [],
             errors: [],
             showUniversityModal: false,
             universityName: '',
@@ -317,7 +317,7 @@ export default {
                     this.skillName = '';
                     this.errors = [];
                     this.techSkillsList.data.push(response.data.data);
-                    this.selectedSkill = [];
+                    // this.selectedSkill = [];
                     this.selectedSkill.push(response.data.data);
                 })
                 .catch((response) => {
@@ -330,7 +330,7 @@ export default {
             this.surname = '';
             this.birthDate = null;
             this.selectedUniversity = null;
-            this.selectedSkill = null;
+            this.selectedSkill = [];
             this.errors = [];
         },
         closeUniversityModal() {
