@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UniversityStoreRequest;
 use App\Http\Resources\UniversityResource;
 use App\Models\University;
 use Illuminate\Http\Request;
@@ -13,12 +14,10 @@ class UniversityController extends Controller
         return UniversityResource::collection(University::all());
     }
 
-    public function store(Request $request)
+    public function store(UniversityStoreRequest $request)
     {
-        $university = University::create([
-            University::NAME => $request->name,
-            University::EVALUATION => $request->evaluation,
-        ]);
+        $data = $request->validated();
+        $university = University::create($data);
 
         return new UniversityResource($university);
     }
