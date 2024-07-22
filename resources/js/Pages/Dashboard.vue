@@ -191,8 +191,8 @@
                 />
             </div>
             <div class="flex justify-end gap-2">
-                <p-button type="button" label="Cancel" severity="secondary" @click="closeSkillsModal"></p-button>
-                <p-button type="button" label="Save" @click="storeTechSkill"></p-button>
+                <p-button type="button" label="Cancel" severity="secondary" @click="closeSkillsModal" />
+                <p-button type="button" label="Save" @click="storeTechSkill" />
             </div>
         </p-dialog>
     </AuthenticatedLayout>
@@ -288,11 +288,13 @@ export default {
                     this.showUniversityModal = false;
                     this.universityName = '';
                     this.universityEvaluation = '';
+                    this.errors = [];
                     this.uniList.data.push(response.data.data);
                     this.selectedUniversity = response.data.data;
                 })
                 .catch((response) => {
-                    this.errors = response.response.data.errors;
+                    // TODO: FIX this error TypeError: response.response is undefined
+                    // this.errors = response.response.data.errors;
                 });
         },
         async storeTechSkill() {
@@ -306,6 +308,7 @@ export default {
                 .then((response) => {
                     this.showSkillsModal = false;
                     this.skillName = '';
+                    this.errors = [];
                     this.techSkillsList.data.push(response.data.data);
                     this.selectedSkill.push(response.data.data);
                 })
@@ -331,6 +334,7 @@ export default {
         closeSkillsModal() {
             this.showSkillsModal = false;
             this.skillName = '';
+            this.errors = [];
         }
     },
 }
