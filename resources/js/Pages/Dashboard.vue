@@ -143,6 +143,14 @@
                     class="flex-auto"
                     autocomplete="off"
                 />
+                <div v-if="errors">
+                    <p
+                        v-for="error in errors.name"
+                        :key="error" class="text-red-600"
+                    >
+                        {{ error }}
+                    </p>
+                </div>
             </div>
             <div class="flex flex-col mb-3">
                 <label for="universityEvaluation" class="font-semibold w-6rem">Акредитационна оценка</label>
@@ -152,6 +160,14 @@
                     class="flex-auto"
                     autocomplete="off"
                 />
+                <div v-if="errors">
+                    <p
+                        v-for="error in errors.evaluation"
+                        :key="error" class="text-red-600"
+                    >
+                        {{ error }}
+                    </p>
+                </div>
             </div>
             <div class="flex justify-end gap-2">
                 <p-button type="button" label="Cancel" severity="secondary" @click="closeUniversityModal"></p-button>
@@ -276,7 +292,7 @@ export default {
                     this.selectedUniversity = response.data.data;
                 })
                 .catch((response) => {
-                    // this.errors = response.response.data.errors;
+                    this.errors = response.response.data.errors;
                 });
         },
         async storeTechSkill() {
@@ -294,7 +310,7 @@ export default {
                     this.selectedSkill.push(response.data.data);
                 })
                 .catch((response) => {
-                    // this.errors = response.response.data.errors;
+                    this.errors = response.response.data.errors;
                 });
         },
         clearFields() {
@@ -310,6 +326,7 @@ export default {
             this.showUniversityModal = false;
             this.universityName = '';
             this.universityEvaluation = '';
+            this.errors = [];
         },
         closeSkillsModal() {
             this.showSkillsModal = false;
