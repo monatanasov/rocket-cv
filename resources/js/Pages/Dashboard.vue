@@ -213,17 +213,20 @@ export default {
     methods: {
         async storeCV() {
             const path = 'dashboard';
+            let skillIds = null;
 
-            let skillIds = this.selectedSkill.map((skill) => {
-                return skill.id;
-            });
+            if (this.selectedSkill) {
+                skillIds = this.selectedSkill.map((skill) => {
+                    return skill.id;
+                });
+            }
 
             const data = {
                 first_name: this.name,
                 father_name: this.fathersName,
                 surname: this.surname,
                 birth_date: dayjs(this.birthDate).format('YYYY-MM-DD'),
-                university_id: this.selectedUniversity.id,
+                university_id: this.selectedUniversity ? this.selectedUniversity.id : null,
                 skills: skillIds,
             }
 

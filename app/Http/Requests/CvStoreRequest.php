@@ -45,11 +45,12 @@ class CvStoreRequest extends FormRequest
                 Rule::exists(University::TABLE, University::ID),
             ],
             'skills' => [
-                'array'
+                'required',
+                'array',
             ],
             'skills.*' => [
                 Rule::exists(TechSkill::TABLE, TechSkill::ID),
-                'distinct'
+                'distinct',
             ],
         ];
     }
