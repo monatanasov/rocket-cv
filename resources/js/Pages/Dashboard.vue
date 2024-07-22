@@ -293,8 +293,7 @@ export default {
                     this.selectedUniversity = response.data.data;
                 })
                 .catch((response) => {
-                    // TODO: FIX this error TypeError: response.response is undefined
-                    // this.errors = response.response.data.errors;
+                    this.errors = response.response.data.errors;
                 });
         },
         async storeTechSkill() {
@@ -313,7 +312,8 @@ export default {
                     this.selectedSkill.push(response.data.data);
                 })
                 .catch((response) => {
-                    this.errors = response.response.data.errors;
+                    // TODO: FIX this error TypeError: response.response is undefined
+                    // this.errors = response.response.data.errors;
                 });
         },
         clearFields() {
