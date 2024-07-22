@@ -133,6 +133,7 @@
             modal
             header="Добавяне на университет"
             :style="{ width: '25rem' }"
+            @update:visible="closeUniversityModal"
         >
             <div class="flex flex-col">
                 <label for="universityName" class="font-semibold w-6rem">Име</label>
@@ -153,7 +154,7 @@
                 />
             </div>
             <div class="flex justify-end gap-2">
-                <p-button type="button" label="Cancel" severity="secondary" @click="showUniversityModal = false"></p-button>
+                <p-button type="button" label="Cancel" severity="secondary" @click="closeUniversityModal"></p-button>
                 <p-button type="button" label="Save" @click="storeUniversity"></p-button>
             </div>
         </p-dialog>
@@ -162,6 +163,7 @@
             modal
             header="Добавяне на умение"
             :style="{ width: '25rem' }"
+            @update:visible="closeSkillsModal"
         >
             <div class="flex flex-col mb-3">
                 <label for="skillName" class="font-semibold">Име</label>
@@ -173,7 +175,7 @@
                 />
             </div>
             <div class="flex justify-end gap-2">
-                <p-button type="button" label="Cancel" severity="secondary" @click="showSkillsModal = false"></p-button>
+                <p-button type="button" label="Cancel" severity="secondary" @click="closeSkillsModal"></p-button>
                 <p-button type="button" label="Save" @click="storeTechSkill"></p-button>
             </div>
         </p-dialog>
@@ -303,6 +305,15 @@ export default {
             this.selectedUniversity = null;
             this.selectedSkill = null;
             this.errors = [];
+        },
+        closeUniversityModal() {
+            this.showUniversityModal = false;
+            this.universityName = '';
+            this.universityEvaluation = '';
+        },
+        closeSkillsModal() {
+            this.showSkillsModal = false;
+            this.skillName = '';
         }
     },
 }
