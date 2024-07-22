@@ -1,5 +1,6 @@
 <template>
     <AuthenticatedLayout>
+        <h1 class="flex justify-center my-4 text-2xl">Търсене на CV-та в диапазон от дати</h1>
         <div class="flex flex-row justify-between max-w-2xl mx-auto my-4">
             <div class="flex flex-col">
                 <label for="startDate">Начална дата</label>
