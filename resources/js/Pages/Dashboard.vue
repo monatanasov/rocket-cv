@@ -2,7 +2,7 @@
 <template>
     <AuthenticatedLayout>
         <form @submit.prevent>
-            <div class="flex flex-col max-w-screen-xl mx-auto my-4 gap-2 border-2 border-red-500">
+            <div class="flex flex-col max-w-screen-xl mx-auto my-4 gap-2">
                 <label class="flex justify-center max-w-sm text-2xl font-medium">Създаване на CV</label>
                 <div class="flex flex-col max-w-sm">
                     <label for="name">Име:</label>
@@ -61,6 +61,7 @@
                             v-model="birthDate"
                             class="flex"
                             showIcon
+                            date-format="yy-mm-dd"
                             iconDisplay="input"
                             inputId="birthDate"
                         />
@@ -85,6 +86,7 @@
                     <p-button
                         icon="pi pi-pencil"
                         aria-label="Submit"
+                        @click="showUniversityModal = true"
                     />
                 </div>
                 <div class="flex justify-between max-w-sm">
@@ -99,18 +101,66 @@
                     <p-button
                         icon="pi pi-pencil"
                         aria-label="Submit"
+                        @click="showSkillsModal = true"
                     />
                 </div>
                 <p-button
                     label="Запис на CV"
                     class="max-w-sm"
                     @click="storeCV"
-
                 />
             </div>
         </form>
-<!--        {{ cvList }}-->
-        {{ uniList }}
+        <p-dialog
+            v-model:visible="showUniversityModal"
+            modal
+            header="Добавяне на университет"
+            :style="{ width: '25rem' }"
+        >
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="universityName" class="font-semibold w-6rem">Име</label>
+                <p-input-text
+                    v-model="universityName"
+                    id="universityName"
+                    class="flex-auto"
+                    autocomplete="off"
+                />
+            </div>
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="universityEvaluation" class="font-semibold w-6rem">Акредитационна оценка</label>
+                <p-input-text
+                    v-model="universityEvaluation"
+                    id="universityEvaluation"
+                    class="flex-auto"
+                    autocomplete="off"
+                />
+            </div>
+            <div class="flex justify-content-end gap-2">
+                <p-button type="button" label="Cancel" severity="secondary" @click="showUniversityModal = false"></p-button>
+                <p-button type="button" label="Save" @click="storeUniversity"></p-button>
+            </div>
+        </p-dialog>
+
+        <p-dialog
+            v-model:visible="showSkillsModal"
+            modal
+            header="Добавяне на умение"
+            :style="{ width: '25rem' }"
+        >
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="skillName" class="font-semibold w-6rem">Име</label>
+                <p-input-text
+                    v-model="skillName"
+                    id="skillName"
+                    class="flex-auto"
+                    autocomplete="off"
+                />
+            </div>
+            <div class="flex justify-content-end gap-2">
+                <p-button type="button" label="Cancel" severity="secondary" @click="showSkillsModal = false"></p-button>
+                <p-button type="button" label="Save" @click="storeTechSkill"></p-button>
+            </div>
+        </p-dialog>
     </AuthenticatedLayout>
 </template>
 
@@ -123,6 +173,8 @@ import pButton from 'primevue/button';
 import pMultiSelect from 'primevue/multiselect';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import pDialog from 'primevue/dialog';
+
 export default {
     name: 'cv-page',
     components: {
@@ -132,6 +184,7 @@ export default {
         pDropdown,
         pButton,
         pMultiSelect,
+        pDialog,
     },
     props: {
         cvList: Object,
@@ -147,6 +200,11 @@ export default {
             selectedUniversity: null,
             selectedSkill: null,
             errors: [],
+            showUniversityModal: false,
+            universityName: '',
+            universityEvaluation: '',
+            showSkillsModal: false,
+            skillName: ''
         };
     },
     created() {
@@ -156,12 +214,17 @@ export default {
         async storeCV() {
             const path = 'dashboard';
 
+            let skillIds = this.selectedSkill.map((skill) => {
+                return skill.id;
+            });
+
             const data = {
                 first_name: this.name,
                 father_name: this.fathersName,
                 surname: this.surname,
                 birth_date: dayjs(this.birthDate).format('YYYY-MM-DD'),
                 university_id: this.selectedUniversity.id,
+                skills: skillIds,
             }
 
             await axios.post(path, data)
@@ -172,8 +235,44 @@ export default {
                 .catch((response) => {
                     this.errors = response.response.data.errors;
                 });
+        },
+        async storeUniversity() {
+            const path = 'universities';
 
-            console.log(this.errors);
+            const data = {
+                name: this.universityName,
+                evaluation: this.universityEvaluation,
+            }
+
+            await axios.post(path, data)
+                .then((response) => {
+                    this.showUniversityModal = false;
+                    this.universityName = '';
+                    this.universityEvaluation = '';
+                    this.uniList.data.push(response.data.data);
+                    this.selectedUniversity = response.data.data;
+                })
+                .catch((response) => {
+                    // this.errors = response.response.data.errors;
+                });
+        },
+        async storeTechSkill() {
+            const path = 'tech-skills';
+
+            const data = {
+                name: this.skillName,
+            }
+
+            await axios.post(path, data)
+                .then((response) => {
+                    this.showSkillsModal = false;
+                    this.skillName = '';
+                    this.techSkillsList.data.push(response.data.data);
+                    this.selectedSkill.push(response.data.data);
+                })
+                .catch((response) => {
+                    // this.errors = response.response.data.errors;
+                });
         },
         clearFields() {
             this.name = '';

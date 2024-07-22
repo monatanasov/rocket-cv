@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Requests\CvIndexRequest;
 use App\Models\CV;
 use App\Models\User;
 use Carbon\Carbon;
@@ -9,9 +10,57 @@ use Tests\TestCase;
 
 class CvTest extends TestCase
 {
+    private function indexRoute(array $queryParameters = []): string
+    {
+        return route('search', $queryParameters);
+    }
+
     private function storeRoute(): string
     {
         return route('dashboard.store');
+    }
+
+
+    public function testIndex()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::first();
+        $cv = CV::factory()->create([
+            CV::BIRTH_DATE => '1979-04-10',
+        ]);
+        $otherCV = CV::factory()->create([
+            CV::BIRTH_DATE => '2000-01-01',
+        ]);
+
+        $url = $this->indexRoute();
+
+        $this
+            ->actingAs($user)
+            ->get($url)
+            ->assertSee($cv->first_name)
+            ->assertSee($otherCV->first_name);
+    }
+    public function testIndexWithSearch(): void
+    {
+        $this->withoutExceptionHandling();
+        $user = User::first();
+        $cv = CV::factory()->create([
+            CV::BIRTH_DATE => '1979-04-10',
+        ]);
+        $otherCV = CV::factory()->create([
+            CV::BIRTH_DATE => '2000-01-01',
+        ]);
+
+        $url = $this->indexRoute([
+            CvIndexRequest::WHERE_START_DATE => '1970-01-01',
+            CvIndexRequest::WHERE_END_DATE => '1980-01-01',
+        ]);
+
+        $this
+            ->actingAs($user)
+            ->get($url)
+            ->assertSee($cv->first_name)
+            ->assertDontSee($otherCV->first_name);
     }
 
     public function testStoreUsersCanStoreCV(): void
