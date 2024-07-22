@@ -309,11 +309,11 @@ export default {
                     this.skillName = '';
                     this.errors = [];
                     this.techSkillsList.data.push(response.data.data);
+                    this.selectedSkill = [];
                     this.selectedSkill.push(response.data.data);
                 })
                 .catch((response) => {
-                    // TODO: FIX this error TypeError: response.response is undefined
-                    // this.errors = response.response.data.errors;
+                    this.errors = response.response.data.errors;
                 });
         },
         clearFields() {
