@@ -89,20 +89,30 @@
                         @click="showUniversityModal = true"
                     />
                 </div>
-                <div class="flex justify-between max-w-sm">
-                    <p-multi-select
-                        v-model="selectedSkill"
-                        :options="techSkillsList.data"
-                        optionLabel="name"
-                        placeholder="Умения в технологии..."
-                        :maxSelectedLabels="3"
-                        class="w-full md:w-20rem mr-4"
-                    />
-                    <p-button
-                        icon="pi pi-pencil"
-                        aria-label="Submit"
-                        @click="showSkillsModal = true"
-                    />
+                <div class="max-w-sm">
+                    <div class="flex justify-between">
+                        <p-multi-select
+                            v-model="selectedSkill"
+                            :options="techSkillsList.data"
+                            optionLabel="name"
+                            placeholder="Умения в технологии..."
+                            :maxSelectedLabels="3"
+                            class="w-full md:w-20rem mr-4"
+                        />
+                        <p-button
+                            icon="pi pi-pencil"
+                            aria-label="Submit"
+                            @click="showSkillsModal = true"
+                        />
+                    </div>
+                    <div v-if="errors">
+                        <p
+                            v-for="error in errors.skills"
+                            :key="error" class="text-red-600"
+                        >
+                            {{ error }}
+                        </p>
+                    </div>
                 </div>
                 <p-button
                     label="Запис на CV"
