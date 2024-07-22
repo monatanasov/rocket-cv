@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TechSkillStoreRequest;
 use App\Http\Resources\TechSKillResource;
 use App\Models\TechSkill;
 use Illuminate\Http\Request;
@@ -13,11 +14,10 @@ class TechSkillController extends Controller
         return TechSKillResource::collection(TechSKill::all());
     }
 
-    public function store(Request $request)
+    public function store(TechSkillStoreRequest $request)
     {
-        $skill = TechSkill::create([
-            TechSkill::NAME => $request->name,
-        ]);
+        $data = $request->validated();
+        $skill = TechSkill::create($data);
 
         return new TechSKillResource($skill);
     }
