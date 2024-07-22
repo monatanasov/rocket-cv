@@ -189,6 +189,14 @@
                     class="flex-auto"
                     autocomplete="off"
                 />
+                <div v-if="errors">
+                    <p
+                        v-for="error in errors.name"
+                        :key="error" class="text-red-600"
+                    >
+                        {{ error }}
+                    </p>
+                </div>
             </div>
             <div class="flex justify-end gap-2">
                 <p-button type="button" label="Cancel" severity="secondary" @click="closeSkillsModal" />
