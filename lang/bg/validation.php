@@ -149,4 +149,36 @@ return [
             'invalid-datetime' => 'Невалидна дата или час.'
         ]
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Validation Attributes
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used to swap our attribute placeholder
+    | with something more reader friendly such as "E-Mail Address" instead
+    | of "email". This simply helps us make our message more expressive.
+    |
+    */
+
+    'attributes' => [
+        'name' => 'Име',
+        'evaluation' => 'Акредитационна оценка',
+        'first_name' => 'Име',
+        'father_name' => 'Презиме',
+        'surname' => 'Фамилия',
+        'birth_date' => 'Дата на раждане',
+        'skills' => 'Умения',
+    ],
+
+    /*
+|--------------------------------------------------------------------------
+| Custom Validation Values
+|--------------------------------------------------------------------------
+*/
+    'values' => [
+        'birth_date' => [
+            'today' => 'днес'
+        ]
+    ]
 ];
