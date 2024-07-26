@@ -6,7 +6,7 @@
         v-if="showText"
         class="inline text-red-500 text-sm font-semibold"
     >
-        Required fields
+        Задължителни полета
     </p>
 </template>
 
