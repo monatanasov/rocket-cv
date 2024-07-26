@@ -16,7 +16,8 @@ class CvResource extends JsonResource
             'middle_name' => $this->{CV::FATHER_NAME},
             'last_name' => $this->{CV::SURNAME},
             'birthDate' => $this->{CV::BIRTH_DATE},
-            'university' => new UniversityResource($this->whenLoaded('university'))
+            'university' => new UniversityResource($this->whenLoaded('university')),
+            'techSkills' => TechSKillResource::collection($this->whenLoaded('techSkills')),
         ];
     }
 }

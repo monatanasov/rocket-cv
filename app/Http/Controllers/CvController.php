@@ -30,14 +30,14 @@ class CvController extends Controller
         if ($request->query('wantsJson')) {
             return CvResource::collection(
                 $cvList
-                    ->with('university')
+                    ->with(['university', 'techSkills'])
                     ->get());
         }
 
         return Inertia::render('Search', [
             'cvList' => CvResource::collection(
                 $cvList
-                    ->with('university')
+                    ->with(['university', 'techSkills'])
                     ->get()
             ),
         ]);

@@ -38,6 +38,7 @@
                 <p-column field="last_name" header="Фамилия"></p-column>
                 <p-column field="birthDate" header="Дата на раждане"></p-column>
                 <p-column field="university.name" header="Университет"></p-column>
+                <p-column field="techSkills" header="Технически умения"></p-column>
             </p-data-table>
         </div>
     </AuthenticatedLayout>
@@ -70,9 +71,6 @@ export default {
             startDate: null,
             endDate: null,
         };
-    },
-    created() {
-
     },
     methods: {
         async searchCVS() {
