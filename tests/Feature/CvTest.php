@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Http\Requests\CvIndexRequest;
 use App\Models\CV;
+use App\Models\CvSkill;
+use App\Models\TechSkill;
 use App\Models\User;
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -23,7 +25,6 @@ class CvTest extends TestCase
 
     public function testIndex()
     {
-        $this->withoutExceptionHandling();
         $user = User::first();
         $cv = CV::factory()->create([
             CV::BIRTH_DATE => '1979-04-10',
@@ -42,7 +43,6 @@ class CvTest extends TestCase
     }
     public function testIndexWithSearch(): void
     {
-        $this->withoutExceptionHandling();
         $user = User::first();
         $cv = CV::factory()->create([
             CV::BIRTH_DATE => '1979-04-10',
@@ -66,9 +66,17 @@ class CvTest extends TestCase
     public function testStoreUsersCanStoreCV(): void
     {
         $user = User::first();
-        $cv = CV::factory()->raw();
+        $skill = TechSkill::factory()->create([
+            'name' => 'new skill',
+        ]);
+        $cv = CV::factory()
+            ->raw([
+                'skills' => [
+                    $skill->id
+                ],
+            ]);
 
-        $this
+        $response = $this
             ->actingAs($user)
             ->postJson($this->storeRoute(), $cv)
             ->assertCreated()
@@ -81,6 +89,15 @@ class CvTest extends TestCase
                 CV::SURNAME => $cv[CV::SURNAME],
                 CV::BIRTH_DATE => $cv[CV::BIRTH_DATE],
                 CV::UNIVERSITY_ID => $cv[CV::UNIVERSITY_ID],
+            ]);
+
+//        $latestCV = CV::latest()->first();
+        $storedCvId = $response->json()['data']['id'];
+
+        $this
+            ->assertDatabaseHas(CvSkill::TABLE, [
+                CvSkill::CV_ID => $storedCvId,
+                CvSkill::SKILL_ID => $skill[TechSkill::ID],
             ]);
     }
 
