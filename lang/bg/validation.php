@@ -169,6 +169,8 @@ return [
         'surname' => 'Фамилия',
         'birth_date' => 'Дата на раждане',
         'skills' => 'Умения',
+        'whereStartDate' => 'Начална дата',
+        'whereEndDate' => 'Крайна дата',
     ],
 
     /*
