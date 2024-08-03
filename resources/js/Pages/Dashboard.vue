@@ -1,6 +1,10 @@
 
 <template>
     <AuthenticatedLayout>
+        <p-toast
+            position="bottom-left"
+            grouo="bl"
+        />
         <form @submit.prevent>
             <div class="flex flex-col max-w-screen-xl mx-auto my-4 gap-2">
                 <label class="flex justify-center max-w-sm text-2xl font-medium">Създаване на CV</label>
@@ -217,6 +221,7 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import pDialog from 'primevue/dialog';
 import asterisk from '../Components/asterisk.vue';
+import pToast from 'primevue/toast';
 
 export default {
     name: 'cv-page',
@@ -229,6 +234,7 @@ export default {
         pMultiSelect,
         pDialog,
         asterisk,
+        pToast,
     },
     props: {
         cvList: Object,
@@ -277,7 +283,12 @@ export default {
             await axios.post(path, data)
                 .then(() => {
                     this.clearFields()
-                    console.log('axios stored');
+                    this.$toast.add({
+                        severity: 'success',
+                        summary: 'Поздравления!',
+                        detail: 'Вашето CV е успешно запазено в системата.',
+                        life: 5000,
+                    });
                 })
                 .catch((response) => {
                     this.errors = response.response.data.errors;
@@ -317,7 +328,6 @@ export default {
                     this.skillName = '';
                     this.errors = [];
                     this.techSkillsList.data.push(response.data.data);
-                    // this.selectedSkill = [];
                     this.selectedSkill.push(response.data.data);
                 })
                 .catch((response) => {
