@@ -1,37 +1,60 @@
 <template>
     <AuthenticatedLayout>
         <h1 class="flex justify-center my-4 text-2xl">Търсене на CV-та в диапазон от дати</h1>
-        <div class="flex flex-row justify-between max-w-2xl mx-auto my-4">
-            <div class="flex flex-col">
-                <label for="startDate">Начална дата</label>
-                <p-calendar
-                    v-model="startDate"
-                    showIcon
-                    date-format="yy-mm-dd"
-                    iconDisplay="input"
-                    inputId="startDate"
+        <div class="max-w-2xl mx-auto my-4">
+            <div class="flex flex-row justify-between">
+                <div class="flex flex-col">
+                    <label for="startDate">Начална дата</label>
+                    <p-calendar
+                        v-model="startDate"
+                        showIcon
+                        date-format="yy-mm-dd"
+                        iconDisplay="input"
+                        inputId="startDate"
+                    />
+                </div>
+                <div class="flex flex-col max-w-sm">
+                    <label for="endDate">Крайна дата</label>
+                    <p-calendar
+                        v-model="endDate"
+                        showIcon
+                        date-format="yy-mm-dd"
+                        iconDisplay="input"
+                        inputId="endDate"
+                    />
+                </div>
+                <p-button
+                    label="Търсене"
+                    class=""
+                    @click="searchCVS"
                 />
             </div>
-            <div class="flex flex-col max-w-sm">
-                <label for="endDate">Крайна дата</label>
-                <p-calendar
-                    v-model="endDate"
-                    showIcon
-                    date-format="yy-mm-dd"
-                    iconDisplay="input"
-                    inputId="endDate"
-                />
+            <div v-if="errors">
+                <p
+                    v-for="error in errors.whereStartDate"
+                    :key="error" class="text-red-600"
+                >
+                    {{ error }}
+                </p>
             </div>
-            <p-button
-                label="Търсене"
-                class=""
-                @click="searchCVS"
-            />
+            <div v-if="errors">
+                <p
+                    v-for="error in errors.whereEndDate"
+                    :key="error" class="text-red-600"
+                >
+                    {{ error }}
+                </p>
+            </div>
         </div>
         <div class="mx-auto my-4 max-w-6xl">
             <p-data-table
                 :value="cvList.data"
             >
+                <template #empty>
+                    <p class="text-center">
+                        Няма намерени резултати
+                    </p>
+                </template>
                 <p-column field="id" header="ID" />
                 <p-column field="first_name" header="Име" />
                 <p-column field="middle_name" header="Презиме" />
@@ -43,7 +66,6 @@
         </div>
     </AuthenticatedLayout>
 </template>
-
 
 <script>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
@@ -70,7 +92,11 @@ export default {
         return {
             startDate: null,
             endDate: null,
+            errors: [],
         };
+    },
+    created() {
+        this.errors = [];
     },
     mounted() {
         this.cvList.data.forEach((cv, index) => {
@@ -90,6 +116,7 @@ export default {
     },
     methods: {
         async searchCVS() {
+            this.errors = [];
             let whereStartDate = dayjs(this.startDate).format('YYYY-MM-DD');
             let whereEndDate = dayjs(this.endDate).format('YYYY-MM-DD')
             let path = `search?whereStartDate=${whereStartDate}&whereEndDate=${whereEndDate}&wantsJson=1`;
@@ -99,13 +126,11 @@ export default {
                     this.cvList.data = response.data.data;
                 })
                 .catch((response) => {
-                    alert('error');
-                    // this.errors = response.response.data.errors;
+                    // alert('error');
+                    this.errors = response.response.data.errors;
                 });
         },
     },
 
 }
 </script>
-
-
