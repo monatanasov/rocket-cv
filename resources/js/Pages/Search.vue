@@ -2,8 +2,8 @@
     <AuthenticatedLayout>
         <h1 class="flex justify-center my-4 text-2xl">Търсене на CV-та в диапазон от дати</h1>
         <div class="max-w-2xl mx-auto my-4">
-            <div class="flex flex-row justify-between">
-                <div class="flex flex-col">
+            <div class="flex flex-row gap-2 items-end">
+                <div class="flex flex-col w-full">
                     <label for="startDate">Начална дата</label>
                     <p-calendar
                         v-model="startDate"
@@ -13,7 +13,7 @@
                         inputId="startDate"
                     />
                 </div>
-                <div class="flex flex-col max-w-sm">
+                <div class="flex flex-col w-full">
                     <label for="endDate">Крайна дата</label>
                     <p-calendar
                         v-model="endDate"
@@ -25,7 +25,7 @@
                 </div>
                 <p-button
                     label="Търсене"
-                    class=""
+                    class="px-8"
                     @click="searchCVS"
                 />
             </div>
