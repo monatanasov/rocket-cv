@@ -32,12 +32,13 @@
             <p-data-table
                 :value="cvList.data"
             >
-                <p-column field="id" header="ID"></p-column>
-                <p-column field="first_name" header="Име"></p-column>
-                <p-column field="middle_name" header="Презиме"></p-column>
-                <p-column field="last_name" header="Фамилия"></p-column>
-                <p-column field="birthDate" header="Дата на раждане"></p-column>
-                <p-column field="university.name" header="Университет"></p-column>
+                <p-column field="id" header="ID" />
+                <p-column field="first_name" header="Име" />
+                <p-column field="middle_name" header="Презиме" />
+                <p-column field="last_name" header="Фамилия" />
+                <p-column field="birthDate" header="Дата на раждане" />
+                <p-column field="university.name" header="Университет" />
+                <p-column field="skills" header="Технически умения" />
             </p-data-table>
         </div>
     </AuthenticatedLayout>
@@ -71,8 +72,21 @@ export default {
             endDate: null,
         };
     },
-    created() {
+    mounted() {
+        this.cvList.data.forEach((cv, index) => {
 
+            let skillsList = null;
+
+            cv.techSkills.forEach((skill) => {
+                if (skillsList) {
+                    skillsList = skillsList + ', ' + skill.name;
+                } else {
+                    skillsList = skill.name;
+                }
+            });
+
+            this.cvList.data[index].skills = skillsList;
+        });
     },
     methods: {
         async searchCVS() {
