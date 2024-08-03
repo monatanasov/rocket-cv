@@ -32,6 +32,11 @@
             <p-data-table
                 :value="cvList.data"
             >
+                <template #empty>
+                    <p class="text-center">
+                        Няма намерени резултати
+                    </p>
+                </template>
                 <p-column field="id" header="ID" />
                 <p-column field="first_name" header="Име" />
                 <p-column field="middle_name" header="Презиме" />
